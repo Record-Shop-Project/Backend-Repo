@@ -20,7 +20,7 @@ exports.updateUser = async (req, res, next) => {
   const { id } = req.params;
   try {
     const userUpdated = await User.findByIdAndUpdate(id, req.body, {
-      nes: true,
+      new: true,
     });
     res.json(userUpdated);
   } catch (err) {

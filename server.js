@@ -1,6 +1,6 @@
 const express = require('express');
 const app = express();
-const port = 3000;
+const port = 8080;
 const cors = require('cors');
 require('dotenv').config()
 const recordsRouter = require("./routes/recordsRouter");
@@ -10,8 +10,7 @@ const mongoose = require('mongoose');
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`);
 });
-// Connect to DB
-//const strConn = "mongodb+srv://amitdci:amitdci@cluster0.m0d9h.mongodb.net/record-store-project?retryWrites=true&w=majority"
+// Connect to DBongodb
 const strConn = process.env.DB_CONNECTION;
 mongoose.connect(strConn,{
     useCreateIndex: true,

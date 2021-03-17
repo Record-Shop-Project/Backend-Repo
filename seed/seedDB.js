@@ -2,9 +2,10 @@ const mongoose = require('mongoose');
 const User = require('../models/User');
 const Record = require('../models/Record');
 const faker = require('faker');
+require('dotenv').config();
 
 (async function () {
-    const strConn = "mongodb+srv://amitdci:amitdci@cluster0.m0d9h.mongodb.net/record-store-project?retryWrites=true&w=majority";
+    const strConn = process.env.DB_CONNECTION
     mongoose.connect(strConn, {
         useNewUrlParser: true,
         useUnifiedTopology: true,
@@ -30,7 +31,7 @@ const faker = require('faker');
       }
 
     const userPromises = Array(10)
-    .fill(null)
+    .fill()
     .map(() => {
         const userData = {
             firstName: faker.name.firstName(),
@@ -42,11 +43,11 @@ const faker = require('faker');
         };
         console.log(`${userData.firstName} has been created`);
         const user = new User(userData);
-        return user.save();
+        return user.save(); // generate the promise
     });
 
     try {
-        await Promise.all(userPromises);
+        await Promise.all(userPromises); // wait for all 10 promisses is resolved
         console.log("users were stored in DB")
     } catch (error) {
         console.log(error)
@@ -75,5 +76,5 @@ const faker = require('faker');
 
 
 
-    mongoose.connection.close();
+       mongoose.connection.close();
 })();

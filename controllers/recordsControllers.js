@@ -34,7 +34,7 @@ exports.getRecord = async (req, res, next) => {
 exports. updateRecord =async (req,res,next)=> {
     const {id} = req.params
  try{
-     const recordUpdate = await Record.findByIdAndUpdate(id)
+     const recordUpdate = await Record.findByIdAndUpdate(id, req.body, {new:true})
      res.json(recordUpdate)
  }catch(err){
      next(err)
