@@ -39,7 +39,7 @@ require('dotenv').config();
             nickname: faker.internet.userName(),
             email: faker.internet.email(),
             password: '1234',
-            avatar: faker.internet.avatar()
+            avatar: 'https://images.squarespace-cdn.com/content/v1/5b767372506fbefa1c2e1a39/1591137534047-6UC0XAJIUS551VZ2VUM5/ke17ZwdGBToddI8pDm48kCcI7etBRADtzlxqGLJUEhl7gQa3H78H3Y0txjaiv_0fDoOvxcdMmMKkDsyUqMSsMWxHk725yiiHCCLfrh8O1z5QPOohDIaIeljMHgDF5CVlOqpeNLcJ80NK65_fV7S1UYQXM0qUkEKFwFydzVeItFkl7lV4xb0V2Aa7fVfA5XnrYCNktvz-O8E62ZORL8IqRg/John+Lennon.jpg?format=2500w'
         };
         console.log(`${userData.firstName} has been created`);
         const user = new User(userData);

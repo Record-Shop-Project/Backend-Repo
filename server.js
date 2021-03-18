@@ -5,6 +5,7 @@ const cors = require('cors');
 require('dotenv').config()
 const recordsRouter = require("./routes/recordsRouter");
 const usersRouter = require("./routes/usersRouter")
+const authRouter = require("./routes/authRouter")
 
 const mongoose = require('mongoose');
 app.listen(port, () => {
@@ -27,7 +28,8 @@ app.use(cors());
 
 /**ROUTES */
 app.use('/users', usersRouter);
-app.use('/records', recordsRouter)
+app.use('/records', recordsRouter);
+app.use('/login', authRouter)
 
 // Error Handling
 app.use(function errorHandler(err, req, res, next) {

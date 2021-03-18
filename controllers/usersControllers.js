@@ -6,6 +6,8 @@ exports.getUsers = async (req, res, next) => {
   res.send(users);
 };
 
+
+
 exports.getUser = async (req, res, next) => {
   const { id } = req.params;
   try {
