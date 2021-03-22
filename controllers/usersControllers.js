@@ -10,9 +10,8 @@ exports.getUser = async (req, res, next) => {
   const { id } = req.params;
   try {
     const user = await User.findById(id);
-    userUpdated.avatar = `${req.protocol}://${req.get("host")}${
-      userUpdated.avatar
-    }`;
+    user.avatar = `${req.protocol}://${req.get('host')}${user.avatar}`;
+    //                localhost    ://8080             /images/avatar1.jpg
     res.json(user);
   } catch (err) {
     next(err);
@@ -26,8 +25,8 @@ exports.updateUser = async (req, res, next) => {
       new: true,
     });
     userUpdated.avatar = `${req.protocol}://${req.get("host")}${
-      userUpdated.avatar
-    }`;
+    userUpdated.avatar
+  }`;
     res.json(userUpdated);
   } catch (err) {
     next(err);

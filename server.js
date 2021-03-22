@@ -6,6 +6,8 @@ require('dotenv').config()
 const recordsRouter = require("./routes/recordsRouter");
 const usersRouter = require("./routes/usersRouter")
 const authRouter = require("./routes/authRouter")
+const path= require('path')
+
 
 const mongoose = require('mongoose');
 app.listen(port, () => {
@@ -25,6 +27,8 @@ mongoose.connect(strConn,{
     /**EXPRESS MIDDLEWARE */
 app.use(express.json());
 app.use(cors());
+app.use('/images', express.static('images'));
+
 
 /**ROUTES */
 app.use('/users', usersRouter);
