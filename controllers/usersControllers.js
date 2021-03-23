@@ -10,9 +10,7 @@ exports.getUser = async (req, res, next) => {
   const { id } = req.params;
   try {
     const user = await User.findById(id);
-    userUpdated.avatar = `${req.protocol}://${req.get("host")}${
-      userUpdated.avatar
-    }`;
+    user.avatar = `${req.protocol}://${req.get("host")}${user.avatar}`;
     res.json(user);
   } catch (err) {
     next(err);
