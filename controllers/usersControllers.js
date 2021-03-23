@@ -1,4 +1,3 @@
-// const { find } = require("../models/User");
 const User = require("../models/User");
 
 exports.getUsers = async (req, res, next) => {

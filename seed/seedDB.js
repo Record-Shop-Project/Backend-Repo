@@ -39,7 +39,7 @@ require("dotenv").config();
         nickName: faker.internet.userName(),
         email: faker.internet.email(),
         password: "1234",
-        avatar: "/images/avatar1",
+        avatar: "/images/avatar1.jpg",
       };
       console.log(`${userData.firstName} has been created`);
       const user = new User(userData);
