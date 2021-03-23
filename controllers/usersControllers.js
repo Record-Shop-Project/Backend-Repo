@@ -18,6 +18,7 @@ exports.getUser = async (req, res, next) => {
   }
 };
 
+
 exports.updateUser = async (req, res, next) => {
   const { id } = req.params;
   try {
@@ -26,7 +27,7 @@ exports.updateUser = async (req, res, next) => {
     });
     userUpdated.avatar = `${req.protocol}://${req.get("host")}${
     userUpdated.avatar
-  }`;
+  }`
     res.json(userUpdated);
   } catch (err) {
     next(err);
