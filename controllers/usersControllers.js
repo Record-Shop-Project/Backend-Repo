@@ -11,6 +11,7 @@ exports.getUser = async (req, res, next) => {
   try {
     const user = await User.findById(id);
     user.avatar = `${req.protocol}://${req.get("host")}${user.avatar}`;
+    //                localhost    ://8080             /images/avatar1.jpg
     res.json(user);
   } catch (err) {
     next(err);
