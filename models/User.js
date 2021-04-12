@@ -41,19 +41,5 @@ UserSchema.methods.generateAuthToken = function () {
   return token;
 };
 
-// Find By token
-// UserSchema.statics.findByToken = function (token) {
-//   const User = this;
-//   const ourSuperSecretKey = "thisisalongandsecurestring";
-
-//   // Decode the cookie
-//   try {
-//     let decoded = jwt.verify(token, ourSuperSecretKey);
-//     console.log(`decoded=>`, decoded);
-//     return User.findOne({ _id: decoded._id });
-//   } catch (error) {
-//     return;
-//   }
-// };
 const User = model("User", UserSchema);
 module.exports = User;

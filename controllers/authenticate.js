@@ -8,7 +8,7 @@ exports.login = async (req, res, next) => {
     const userFound = await User.findOne({ email });
 
     // if (!userFound) return next(customError("user not found!", 401));
-    // userFound.avatar = `${req.protocol}://${req.get("host")}${user.avatar}`;
+    //userFound.avatar = `${req.protocol}://${req.get("host")}${user.avatar}`;
 
     //now compare hashed password
     const passwordMatched = bcrypt.compareSync(password, userFound.password);
