@@ -1,75 +1,85 @@
-const mongoose = require("mongoose");
-const User = require("../models/User");
-const Record = require("../models/Record");
-const faker = require("faker");
-require("dotenv").config();
+const mongoose = require('mongoose');
+const User = require('../models/User');
+const Record = require('../models/Record');
+var faker = require('faker');
+
+console.log(`We are about to write a seed script`);
 
 (async function () {
-  const strConn = process.env.DB_CONNECTION;
-  mongoose.connect(strConn, {
+  const dbUrl = 'mongodb+srv://encsooo:encsooo@cluster0.ug2lp.mongodb.net/record_db?retryWrites=true&w=majority';
+
+  mongoose.connect(dbUrl, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useFindAndModify: false,
     useCreateIndex: true,
   });
 
-  mongoose.connection.on("error", () => console.log("Cannot connect to DB"));
-  mongoose.connection.on("open", () => console.log("Connected to DB. YaY"));
+  mongoose.connection.on('error', () => console.log('Can not connect to the DB'));
+  mongoose.connection.on('open', () => console.log('Connected to the database....'));
 
+  // We need to drop users
   try {
     await User.deleteMany({});
-    console.log("users deleted");
+    console.log(`Old users moved to a better place, Spandau`);
   } catch (error) {
     console.log(error);
   }
 
+  // We need to drop records
   try {
     await Record.deleteMany({});
-    console.log("records deleted");
+    console.log(`Old records moved to a better place, the woods`);
   } catch (error) {
     console.log(error);
   }
 
-  const userPromises = Array(10)
-    .fill()
+  // Construct 20 fake users and 20 fake records
+  const userPromises = Array(20)
+    .fill(null)
     .map(() => {
+      //create a fake user
       const userData = {
         firstName: faker.name.firstName(),
         lastName: faker.name.lastName(),
-        nickName: faker.internet.userName(),
         email: faker.internet.email(),
-        password: "1234",
-        avatar: "/images/avatar1",
+        password: '0123456789',
+        nickname: faker.internet.userName(),
       };
-      console.log(`${userData.firstName} has been created`);
+
+      console.log(`User ${userData.email} has been created`);
+
       const user = new User(userData);
-      return user.save(); // generate the promise
+      return user.save();
     });
 
   try {
-    await Promise.all(userPromises); // wait for all 10 promisses is resolved
-    console.log("users were stored in DB");
+    await Promise.all(userPromises);
+    console.log(`We stored 20 users in the DB`);
   } catch (error) {
     console.log(error);
   }
 
-  const recordPromises = Array(20)
+  const recordsPromises = Array(20)
     .fill(null)
     .map(() => {
+      //create a fake user
       const recordData = {
-        cover: faker.random.image(),
-        title: faker.random.words(),
-        artist: faker.random.words(),
-        year: faker.date.past(),
+        cover: faker.image.nightlife(500, 500),
+        title: faker.lorem.words(),
+        artist: faker.lorem.word(),
+        year: faker.random.number(1980, 2021),
       };
-      console.log(`${recordData.title} has been created`);
+
+      console.log(`Record "${recordData.title}" has been created`);
+
       const record = new Record(recordData);
       return record.save();
     });
 
   try {
-    await Promise.all(recordPromises);
-    console.log("records were stored in DB");
+    await Promise.all(recordsPromises);
+    console.log(`We stored 20 records in the DB`);
   } catch (error) {
     console.log(error);
   }

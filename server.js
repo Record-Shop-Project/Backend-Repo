@@ -1,41 +1,50 @@
 const express = require('express');
 const app = express();
-const port = 8080;
+const port = 5000;
 const cors = require('cors');
-require('dotenv').config()
-const recordsRouter = require("./routes/recordsRouter");
-const usersRouter = require("./routes/usersRouter")
-const authRouter = require("./routes/authRouter")
-const path= require('path')
-
-
 const mongoose = require('mongoose');
+const recordsRouter = require('./routes/recordsRouter');
+const usersRouter = require('./routes/usersRouter');
+const cookies = require('cookie-parser');
+const meRouter = require('./routes/meRouter');
+
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`);
 });
-// Connect to DBongodb
-const strConn = process.env.DB_CONNECTION;
-mongoose.connect(strConn,{
-    useCreateIndex: true,
-    useNewUrlParser:true,
-    useUnifiedTopology:true,
-    useFindAndModify: false
-})
-    .then(() => console.log("Connection to cloud database established!"))
-    .catch( err=> console.log("[ERROR] DB connection failed", err))
 
-    /**EXPRESS MIDDLEWARE */
+/**EXPRESS MIDDLEWARE */
 app.use(express.json());
-app.use(cors());
-app.use('/images', express.static('images'));
+app.use(cors({ origin: 'http://localhost:3000', 
+    credentials: true, }
+  
+));
+app.use('/statics', express.static('statics'));
+app.use(cookies());
 
+/**MONGODB CONNECTION */
+const dbUrl = 'mongodb+srv://encsooo:encsooo@cluster0.ug2lp.mongodb.net/record_db?retryWrites=true&w=majority';
+mongoose
+  .connect(dbUrl, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    useFindAndModify: false,
+    useCreateIndex: true,
+  })
+  .then(() => console.log('Connection to database established!'))
+  .catch((err) => console.log('[ERROR] DB Connection failed', err));
+
+/**AVAILABLE ROUTES */
+app.get('/', (req, res) => {
+  res.send('Welcome to the record shop API!');
+});
 
 /**ROUTES */
 app.use('/users', usersRouter);
 app.use('/records', recordsRouter);
-app.use('/login', authRouter)
+app.use('/me', meRouter); // handles all requests for logged in users
 
-// Error Handling
+
+/**ERROR HANDLING - John Errori*/
 app.use(function errorHandler(err, req, res, next) {
   res.status(err.status || 500).send({
     error: {

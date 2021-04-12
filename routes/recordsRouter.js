@@ -1,16 +1,19 @@
 const express = require('express');
 const router = express.Router();
+const {auth} = require('../middleware/authenticator');
 
 const {
-    getRecord,
-    getRecords,
-    addRecord,
-    updateRecord,
-    deleteRecord
+  getRecord,
+  getRecords,
+  addRecord,
+  updateRecord,
+  deleteRecord,
 } = require('../controllers/recordsControllers');
 
-router.route('/').get(getRecords).post(addRecord);
+// /Records == base route
+router.route('/').get(auth, getRecords).post(auth, addRecord);
 
-router.route('/:id').get(getRecord).put(updateRecord).delete(deleteRecord);
+// /Records/:id
+router.route('/:id').get(auth, getRecord).put(auth, updateRecord).delete(auth, deleteRecord);
 
 module.exports = router;

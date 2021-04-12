@@ -1,8 +1,8 @@
-// const { find } = require("../models/User");
-const User = require("../models/User");
+const User = require('../models/User');
+const bcryptjs = require('bcryptjs');
 
 exports.getUsers = async (req, res, next) => {
-  const users = await User.find().sort({ firstName: 1 });
+  let users = await User.find().sort('firstName');
   res.send(users);
 };
 
@@ -10,25 +10,19 @@ exports.getUser = async (req, res, next) => {
   const { id } = req.params;
   try {
     const user = await User.findById(id);
-    user.avatar = `${req.protocol}://${req.get('host')}${user.avatar}`;
-    //                localhost    ://8080             /images/avatar1.jpg
+     user.avatar = `${req.protocol}://${req.get('host')}${user.avatar}`;
     res.json(user);
   } catch (err) {
     next(err);
   }
 };
 
-
 exports.updateUser = async (req, res, next) => {
   const { id } = req.params;
   try {
-    const userUpdated = await User.findByIdAndUpdate(id, req.body, {
-      new: true,
-    });
-    userUpdated.avatar = `${req.protocol}://${req.get("host")}${
-    userUpdated.avatar
-  }`
-    res.json(userUpdated);
+    let user = await User.findByIdAndUpdate(id, req.body, { new: true });
+    user.avatar = `${req.protocol}://${req.get('host')}${user.avatar}`;
+    res.json(user);
   } catch (err) {
     next(err);
   }
@@ -38,7 +32,8 @@ exports.addUser = async (req, res, next) => {
   const info = req.body;
   try {
     const user = await User.create(info);
-    res.send(user);
+    user.avatar = `${req.protocol}://${req.get('host')}${user.avatar}`;
+    res.json(user);
   } catch (err) {
     next(err);
   }
@@ -51,8 +46,47 @@ exports.deleteUser = async (req, res, next) => {
     if (!userDeleted) throw new Error();
     res.json(userDeleted);
   } catch (err) {
-    let error = new Error(`User with ID ${id} does not exist`);
+    let error = new Error(`Todo with ID ${id} does not exist`);
     error.status = 400;
     next(error);
   }
+};
+
+exports.loginUser = async (req, res, next) => {
+  const { email, password } = req.body;
+  try {
+    const user = await User.findOne({ email });
+
+     if (!user) throw new Error(`Please check your credentials`);
+     user.avatar = `${req.protocol}://${req.get('host')}${user.avatar}`;
+
+    const pwCompareResult = bcryptjs.compareSync(password, user.password);
+
+    if (!pwCompareResult) {
+      return next(customError('Wrong password', 401));
+    }
+
+    // Generate a token
+    const token = user.generateAuthToken();
+
+    // put the token in the response
+    res
+      .cookie('token', token, {
+        expires: new Date(Date.now() + 604800000),
+        // sameSite: process.env.NODE_ENV == 'production' ? 'None' : 'lax',
+        // secure: process.env.NODE_ENV == 'production' ? true : false, //http on localhost, https on production
+         httpOnly: true,
+      })
+      .json(user);
+
+  
+  } catch (err) {
+    err.status = 400;
+    next(err);
+  }
+};
+
+exports.authUser = (req, res) => {
+  //req.user
+  res.json(req.user);
 };
