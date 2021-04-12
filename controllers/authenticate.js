@@ -1,18 +1,30 @@
 const User = require("../models/User");
+const customError = require("../helpers/customError");
+const bcrypt = require("bcryptjs");
 
-exports.login = async (req, res) => {
+exports.login = async (req, res, next) => {
+  const { email, password } = req.body;
   try {
-    const user = await User.findOne({
-      email: req.body.email,
-      password: req.body.password,
-    }); // we get the whole user here
-    if (!user) return res.status(400).send({ error: "user doesn't exist!" });
-    user.avatar = `${req.protocol}://${req.get("host")}${user.avatar}`;
-    res.json(user);
-  } catch (error) {
-    // if(user.password != req.body.password) return res.status(400).send({ error:"password is not valid" })
-    // console.log("user exist and password is matching");
+    const userFound = await User.findOne({ email });
 
-    next(error);
+    // if (!userFound) return next(customError("user not found!", 401));
+    // userFound.avatar = `${req.protocol}://${req.get("host")}${user.avatar}`;
+
+    //now compare hashed password
+    const passwordMatched = bcrypt.compareSync(password, userFound.password);
+
+    // Generate a token
+    const token = userFound.generateAuthToken();
+
+    // put the token in the response
+    res
+      .cookie("token", token, {
+        expires: new Date(Date.now() + 604800000),
+        secure: false, //http
+        httpOnly: true,
+      })
+      .json(userFound);
+  } catch (error) {
+    next(customError("login failed!", 401));
   }
 };
