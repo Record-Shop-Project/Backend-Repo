@@ -9,11 +9,13 @@ const {
   updateUser,
   deleteUser,
   loginUser,
+  logoutUser
 } = require('../controllers/usersControllers');
 
 router.route('/').get(getUsers).post(addUser);
+router.route('/logout').post(auth, logoutUser); 
+router.route('/login').post( loginUser);
 
 router.route('/:id').get(auth, getUser).put(auth, updateUser).delete(auth, deleteUser);
-router.route('/login').post(loginUser);
 
 module.exports = router;

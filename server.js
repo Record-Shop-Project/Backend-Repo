@@ -5,6 +5,7 @@ const cors = require('cors');
 const mongoose = require('mongoose');
 const recordsRouter = require('./routes/recordsRouter');
 const usersRouter = require('./routes/usersRouter');
+const orderRouter = require('./routes/orderRouter');
 const cookies = require('cookie-parser');
 const meRouter = require('./routes/meRouter');
 
@@ -42,11 +43,12 @@ app.get('/', (req, res) => {
 app.use('/users', usersRouter);
 app.use('/records', recordsRouter);
 app.use('/me', meRouter); // handles all requests for logged in users
+app.use('/cart', orderRouter);
 
 
 /**ERROR HANDLING - John Errori*/
 app.use(function errorHandler(err, req, res, next) {
-  res.status(err.status || 500).send({
+  res.status(err.status || 200).send({
     error: {
       message: err.message,
     },

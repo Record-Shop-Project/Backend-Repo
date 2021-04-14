@@ -86,7 +86,19 @@ exports.loginUser = async (req, res, next) => {
   }
 };
 
+exports.logoutUser = async (req, res, next) => {
+  console.log(req.user)
+  res.clearCookie('token', {
+    // sameSite: process.env.NODE_ENV == 'production' ? 'None' : 'lax',
+    // secure: process.env.NODE_ENV == 'production' ? true : false, //http on localhost, https on production
+    httpOnly: true
+  }) // clear the cookie in the browser
+  res.json({ message: "Logged you out successfully" })
+}
+
 exports.authUser = (req, res) => {
   //req.user
+  req.user.avatar = `${req.protocol}://${req.get('host')}${req.user.avatar}`;
+
   res.json(req.user);
 };
