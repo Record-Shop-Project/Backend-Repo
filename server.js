@@ -48,7 +48,7 @@ app.use('/cart', orderRouter);
 
 /**ERROR HANDLING - John Errori*/
 app.use(function errorHandler(err, req, res, next) {
-  res.status(err.status || 200).send({
+  res.status(err.status || 500).send({
     error: {
       message: err.message,
     },

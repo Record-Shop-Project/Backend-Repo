@@ -69,6 +69,7 @@ console.log(`We are about to write a seed script`);
         title: faker.lorem.words(),
         artist: faker.lorem.word(),
         year: faker.random.number(1980, 2021),
+        price: 19.20
       };
 
       console.log(`Record "${recordData.title}" has been created`);
