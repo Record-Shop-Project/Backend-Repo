@@ -5,3 +5,5 @@ const customError = (msg, status = 400) => {
 };
 
 module.exports = customError;
+
+// msg and status will come from another components

@@ -1,12 +1,15 @@
+require("dotenv").config();
 const express = require("express");
 const app = express();
 const port = 8080;
 const cors = require("cors");
 
-require("dotenv").config();
 const recordsRouter = require("./routes/recordsRouter");
 const usersRouter = require("./routes/usersRouter");
 const authRouter = require("./routes/authRouter");
+const logoutRouter = require("./routes/logout");
+const meRouter = require("./routes/meRouter");
+const orderRouter = require("./routes/orderRouter");
 const path = require("path");
 
 const mongoose = require("mongoose");
@@ -30,7 +33,7 @@ mongoose
 app.use(express.json());
 app.use(
   cors({
-    origin: "http://localhost:3000",
+    origin: process.env.FRONTEND_ORIGIN || "http://localhost:3000",
     credentials: true, // allow cookies from your origins
   })
 );
@@ -41,6 +44,9 @@ app.use("/images", express.static("images"));
 app.use("/users", usersRouter);
 app.use("/records", recordsRouter);
 app.use("/login", authRouter);
+app.use("/logout", logoutRouter);
+app.use("/me", meRouter);
+app.use("/orders", orderRouter);
 
 // Error Handling
 app.use(function errorHandler(err, req, res, next) {

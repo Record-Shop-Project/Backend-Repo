@@ -1,8 +1,7 @@
 const User = require("../models/User");
 const jwt = require("jsonwebtoken");
-const cookieParser = require("cookie-parser");
 const customError = require("../helpers/customError");
-const ourSuperSecretKey = "thisisalongandsecurestring";
+const ourSuperSecretKey = process.env.SECRET_KEY;
 
 exports.auth = async (req, res, next) => {
   try {
