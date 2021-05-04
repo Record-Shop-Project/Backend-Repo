@@ -14,7 +14,7 @@ const path = require('path');
 
 const mongoose = require('mongoose');
 const cookieParser = require('cookie-parser');
-app.listen(port, () => {
+app.listen(port || 5000, () => {
   console.log(`Example app listening at http://localhost:${port}`);
 });
 
