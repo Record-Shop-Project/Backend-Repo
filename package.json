@@ -5,8 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "nodemon server.js --ignore data/",
-    "seed": "node seed/seedDB.js",
-    "build": "npm run build"
+    "seed": "node seed/seedDB.js"
   },
   "engines": {
     "node": "12.x"
