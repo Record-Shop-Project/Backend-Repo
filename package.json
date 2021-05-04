@@ -6,7 +6,10 @@
   "scripts": {
     "start": "nodemon server.js --ignore data/",
     "seed": "node seed/seedDB.js",
-    "build": "CI=false npm run build"
+    "build": "npm run build"
+  },
+  "engines": {
+    "node": "12.x"
   },
   "keywords": [],
   "author": "",

@@ -17,6 +17,7 @@ const cookieParser = require("cookie-parser");
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`);
 });
+
 // Connect to DBongodb
 const strConn = process.env.DB_CONNECTION;
 mongoose
