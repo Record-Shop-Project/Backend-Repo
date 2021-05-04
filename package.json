@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon server.js --ignore data/",
+    "start": "nodemon server.js",
     "seed": "node seed/seedDB.js"
   },
   "engines": {
